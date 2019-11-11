@@ -2,9 +2,10 @@
 
 #include "MathHeaders.h"
 #include "LinearColor.h"
+#include "RSIDataTypes.h"
 
 
-struct VertexData
+/*struct VertexData
 {
 	VertexData(Vector3 InPosition = Vector3::Zero, Vector2 InUV = Vector2::Zero,
 		LinearColor InColor = LinearColor::Black) :
@@ -13,7 +14,7 @@ struct VertexData
 	Vector3 Position;
 	Vector2 UV;
 	LinearColor Color;
-};
+};*/
 
 
 class Mesh
@@ -26,6 +27,7 @@ public:
 	FORCEINLINE int* GetIndices() const { return Indices; }
 
 	FORCEINLINE int GetVertexCount() { return VertexCount; }
+	FORCEINLINE int GetIndexCount() { return TriangleCount * 3; }
 	FORCEINLINE int GetTriangleCount() { return TriangleCount; }
 
 private:

@@ -25,11 +25,25 @@ public:
 	virtual void DrawPoint(const Vector2& InVectorPos, const LinearColor& InColor) override;
 	virtual void DrawLine(const Vector2 & InStartPos, const Vector2 & InEndPos, const LinearColor & InColor) override;
 
+	virtual void SetUniformMatrix(Matrix4x4* InMatrixData) override;
+	virtual void SetVertexBuffer(VertexData* InVertexData) override;
+	virtual void SetIndexBuffer(int* InIndexData) override;
+	virtual void DrawPrimitive(UINT InVertexSize, UINT InIndexSize) override;
+
 	virtual void DrawFullVerticalLine(int InX, const LinearColor& InColor) override;
 	virtual void DrawFullHorizontalLine(int InY, const LinearColor& InColor) override;
+
+
 
 private:
 	void SetPixel(const ScreenPoint& InPos, const LinearColor& InColor);
 
 	BlendingModes BlendingMode = BlendingModes::Opaque;
+
+	Matrix4x4 ModelingMatrix;
+	Matrix4x4 ViewMatrix;
+	Matrix4x4 ProjectionMatrix;
+
+	VertexData* VertexBuffer;
+	int* IndexBuffer;
 };

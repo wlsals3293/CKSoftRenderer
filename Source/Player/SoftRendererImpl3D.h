@@ -10,8 +10,13 @@ public:
 	~SoftRendererImpl3D();
 
 public:
+	void LoadResource();
+	void LoadScene();
 	void RenderFrameImpl();
 	void UpdateImpl(float DeltaSeconds);
+
+
+	void RenderObject(class GameObject* InObject);
 
 private:
 	RenderingSoftwareInterface* RSI = nullptr;
@@ -23,12 +28,13 @@ private:
 	// Input Manager
 	InputManager InputManager;
 
-	// Final Matrix
-	Matrix4x4 FinalMatrix;
+	// Resource
+	//VertexData* v = nullptr;
+	//int* i = nullptr;
 
 	// Camera
 	class Camera* MainCamera;
 
 	// GameObject
-	class GameObject* Cube;
+	GameObject* Cube;
 };

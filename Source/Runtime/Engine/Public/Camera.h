@@ -9,8 +9,8 @@ class Camera
 public:
 	Camera(float InFOV, float InNear, float InFar, float InRepAspectRatio);
 
-	
 	Matrix4x4 GetViewMatrix();
+	Matrix4x4 GetProjectionMatrix();
 
 	Matrix4x4 GetLookAtMatrix(Vector3 LookAtPos);
 

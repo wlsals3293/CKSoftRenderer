@@ -112,6 +112,67 @@ void WindowsRSI::DrawLine(const Vector2 & InStartPos, const Vector2 & InEndPos, 
 	}
 }
 
+void WindowsRSI::SetUniformMatrix(Matrix4x4 * InMatrixData)
+{
+	ModelingMatrix = InMatrixData[0];
+	ViewMatrix = InMatrixData[1];
+	ProjectionMatrix = InMatrixData[2];
+}
+
+void WindowsRSI::SetVertexBuffer(VertexData * InVertexData)
+{
+	VertexBuffer = InVertexData;
+}
+
+void WindowsRSI::SetIndexBuffer(int * InIndexData)
+{
+	IndexBuffer = InIndexData;
+}
+
+void WindowsRSI::DrawPrimitive(UINT InVertexSize, UINT InIndexSize)
+{
+	Matrix4x4 finalMat = ProjectionMatrix * ViewMatrix * ModelingMatrix;
+
+	int triangleCount = InIndexSize / 3;
+
+	for (int t = 0; t < triangleCount; t++)
+	{
+		Vector4 tp[3];
+		tp[0] = VertexBuffer[IndexBuffer[t * 3]].Position;
+		tp[1] = VertexBuffer[IndexBuffer[t * 3 + 1]].Position;
+		tp[2] = VertexBuffer[IndexBuffer[t * 3 + 2]].Position;
+
+		for (int ti = 0; ti < 3; ti++)
+		{
+			tp[ti] = finalMat * tp[ti];
+			float repW = 1.f / tp[ti].W;
+			tp[ti].X *= repW;
+			tp[ti].Y *= repW;
+			tp[ti].Z *= repW;
+		}
+
+		// Backface Culling
+		Vector3 edge1 = (tp[1] - tp[0]).ToVector3();
+		Vector3 edge2 = (tp[2] - tp[0]).ToVector3();
+		Vector3 faceNormal = edge2.Cross(edge1).Normalize();
+		static Vector3 cameraDir = -Vector3::UnitZ;
+		if (cameraDir.Dot(faceNormal) < 0.f)
+		{
+			continue;
+		}
+
+		for (int ti = 0; ti < 3; ti++)
+		{
+			tp[ti].X *= (ScreenSize.X * 0.5f);
+			tp[ti].Y *= (ScreenSize.Y * 0.5f);
+		}
+
+		DrawLine(tp[0].ToVector2(), tp[1].ToVector2(), LinearColor::Red);
+		DrawLine(tp[0].ToVector2(), tp[2].ToVector2(), LinearColor::Red);
+		DrawLine(tp[1].ToVector2(), tp[2].ToVector2(), LinearColor::Red);
+	}
+}
+
 void WindowsRSI::DrawFullVerticalLine(int InX, const LinearColor & InColor)
 {
 	if (InX < 0 || InX >= ScreenSize.X)
