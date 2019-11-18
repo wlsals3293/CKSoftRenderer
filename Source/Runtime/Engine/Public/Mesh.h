@@ -36,5 +36,8 @@ private:
 	
 	int VertexCount;
 	int TriangleCount;
+
+	Sphere BoundSphere;
+	BoundingBox BoundBox;
 };
 

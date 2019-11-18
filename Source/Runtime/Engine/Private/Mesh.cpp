@@ -8,6 +8,17 @@ Mesh::Mesh(VertexData * InVertices, int * InIndices, int InVertexCount, int InTr
 	Indices = InIndices;
 	VertexCount = InVertexCount;
 	TriangleCount = InTriangleCount;
+
+	Vector4* vertexPosArray = new Vector4[InVertexCount];
+	for (int i = 0; i < InVertexCount; i++)
+	{
+		vertexPosArray[i] = InVertices[i].Position;
+	}
+
+	BoundBox.CalcBoungingBox(vertexPosArray, InVertexCount);
+	BoundSphere.CalcSphere(vertexPosArray, InVertexCount);
+
+	delete[] vertexPosArray;
 }
 
 Mesh::~Mesh()

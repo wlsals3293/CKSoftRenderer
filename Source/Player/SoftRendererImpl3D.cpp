@@ -91,11 +91,9 @@ void SoftRendererImpl3D::RenderFrameImpl()
 {
 	assert(RSI != nullptr && RSI->IsInitialized() && !ScreenSize.HasZero());
 
-	Matrix4x4 m[3] = {
-		Matrix4x4(),
-		MainCamera->GetLookAtMatrix(Cube[0].TransformData.Position),
-		MainCamera->GetProjectionMatrix()
-	};
+	Matrix4x4 vMat = MainCamera->GetLookAtMatrix(Cube[0].TransformData.Position);
+	Matrix4x4 pMat = MainCamera->GetProjectionMatrix();
+	Matrix4x4 m[3] = { Matrix4x4(),	vMat, pMat };
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -103,6 +101,8 @@ void SoftRendererImpl3D::RenderFrameImpl()
 		RSI->SetUniformMatrix(m);
 		RenderObject(&Cube[i]);
 	}
+
+	DrawGizmo3D(vMat, pMat);
 }
 
 void SoftRendererImpl3D::UpdateImpl(float DeltaSeconds)
@@ -124,5 +124,84 @@ void SoftRendererImpl3D::RenderObject(GameObject * InObject)
 	RSI->SetVertexBuffer(meshToRender->GetVertices());
 	RSI->SetIndexBuffer(meshToRender->GetIndices());
 	RSI->DrawPrimitive(vertexCount, indexCount);
+}
+
+void SoftRendererImpl3D::DrawGizmo3D(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix)
+{
+	const int gizmosVertexCount = 6;
+	VertexData v[gizmosVertexCount] = {
+		VertexData(Vector3::Zero, LinearColor::Red),
+		VertexData(Vector3::UnitX * 500.f, LinearColor::Red),
+		VertexData(Vector3::Zero, LinearColor::Green),
+		VertexData(Vector3::UnitY * 500.f, LinearColor::Green),
+		VertexData(Vector3::Zero, LinearColor::Blue),
+		VertexData(Vector3::UnitZ * 500.f, LinearColor::Blue),
+	};
+
+	const int gizmosLineCount = 3;
+	const int gizmosIndexCount = gizmosLineCount * 2;
+	int i[gizmosIndexCount] = {
+		0, 1,
+		2, 3,
+		4, 5
+	};
+
+	Matrix4x4 m[3] = { Matrix4x4(), InVMatrix, InPMatrix };
+
+	RSI->SetUniformMatrix(m);
+	RSI->SetVertexBuffer(v);
+	RSI->SetIndexBuffer(i);
+	RSI->DrawLinePrimitive(gizmosVertexCount, gizmosIndexCount, 1);
+}
+
+void SoftRendererImpl3D::DrawXYPlane(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix)
+{
+	//float planeLineHalfSize = 500.f;
+	//const int planeSideLineCount = 50;
+	//const int planeLineCount = planeSideLineCount * 2 + 1;
+	//const int planeIndexCount = planeLineCount * 2;
+	//const int planeVertexCount = planeLineCount * 2;
+
+	//VertexData v[planeVertexCount];
+	//int i[planeIndexCount];
+
+	//for (int vi = 0; vi < planeLineCount / 4; ++vi)
+	//{
+	//	if (vi == 0)
+	//	{
+	//		v[0] = VertexData(Vector4(Vector3(-planeLineHalfSize, 0.f, 0.f)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[1] = VertexData(Vector4(Vector3(planeLineHalfSize, 0.f, 0.f)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[2] = VertexData(Vector4(Vector3(0.f, 0.f, -planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[3] = VertexData(Vector4(Vector3(0.f, 0.f, planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+
+	//		i[0] = 0;
+	//		i[1] = 1;
+	//		i[2] = 2;
+	//		i[3] = 3;
+	//	}
+	//	else
+	//	{
+	//		v[vi * 4] = VertexData(Vector4(Vector3(-planeLineHalfSize, 0.f, 10.f * vi)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 1] = VertexData(Vector4(Vector3(planeLineHalfSize, 0.f, 10.f * vi)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 2] = VertexData(Vector4(Vector3(-planeLineHalfSize, 0.f, -10.f * vi)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 3] = VertexData(Vector4(Vector3(planeLineHalfSize, 0.f, -10.f * vi)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 4] = VertexData(Vector4(Vector3(10.f * vi, 0.f, -planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 5] = VertexData(Vector4(Vector3(10.f * vi, 0.f, planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 6] = VertexData(Vector4(Vector3(-10.f * vi, 0.f, -planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+	//		v[vi * 4 + 7] = VertexData(Vector4(Vector3(-10.f * vi, 0.f, planeLineHalfSize)), LinearColor(0.7f, 0.7f, 0.7f));
+
+	//		i[vi * 4] = vi * 4;
+	//		i[vi * 4 + 1] = vi * 4 + 1;
+	//		i[vi * 4 + 2] = vi * 4 + 2;
+	//		i[vi * 4 + 3] = vi * 4 + 3;
+	//	}
+
+	//}
+
+	//Matrix4x4 m[3] = { Matrix4x4(), InVMatrix, InPMatrix };
+	//RSI->SetUniformMatrix(m);
+	//RSI->SetVertexBuffer(v);
+	//RSI->SetIndexBuffer(i);
+	//RSI->DrawLinePrimitive(4, 4);
 }
 

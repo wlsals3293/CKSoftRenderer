@@ -10,3 +10,6 @@
 #include "Matrix4x4.h"
 
 #include "ScreenPoint.h"
+
+#include "Sphere.h"
+#include "BoundingBox.h"

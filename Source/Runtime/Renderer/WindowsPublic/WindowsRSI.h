@@ -29,6 +29,7 @@ public:
 	virtual void SetVertexBuffer(VertexData* InVertexData) override;
 	virtual void SetIndexBuffer(int* InIndexData) override;
 	virtual void DrawPrimitive(UINT InVertexSize, UINT InIndexSize) override;
+	virtual void DrawLinePrimitive(UINT InVertexSize, UINT InIndexSize, float Thickness) override;
 
 	virtual void DrawFullVerticalLine(int InX, const LinearColor& InColor) override;
 	virtual void DrawFullHorizontalLine(int InY, const LinearColor& InColor) override;

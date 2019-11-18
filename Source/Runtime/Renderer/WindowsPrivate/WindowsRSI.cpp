@@ -173,6 +173,51 @@ void WindowsRSI::DrawPrimitive(UINT InVertexSize, UINT InIndexSize)
 	}
 }
 
+void WindowsRSI::DrawLinePrimitive(UINT InVertexSize, UINT InIndexSize, float Thickness)
+{
+	Matrix4x4 FinalMatrix = ProjectionMatrix * ViewMatrix * ModelingMatrix;
+
+	float halfThickness = Thickness * 0.5f;
+
+	int lineCount = InIndexSize / 2;
+	for (int l = 0; l < lineCount; l++)
+	{
+		Vector4 lp[2];
+		lp[0] = VertexBuffer[IndexBuffer[l * 2]].Position;
+		lp[1] = VertexBuffer[IndexBuffer[l * 2 + 1]].Position;
+
+		LinearColor c = VertexBuffer[IndexBuffer[l * 2]].Color;
+
+		for (int li = 0; li < 2; li++)
+		{
+			lp[li] = FinalMatrix * lp[li];
+			float invW = 1.f / lp[li].W;
+			lp[li].X *= invW;
+			lp[li].Y *= invW;
+			lp[li].Z *= invW;
+		}
+
+		// Strech to ScreenSize
+		for (int li = 0; li < 2; li++)
+		{
+			lp[li].X *= (ScreenSize.X * 0.5f);
+			lp[li].Y *= (ScreenSize.Y * 0.5f);
+		}
+
+		Vector2 screenLP[2] = { lp[0].ToVector2(), lp[1].ToVector2() };
+		Vector2 line = (screenLP[1] - screenLP[0]).Normalize() * halfThickness;
+		Vector2 inv90RotLine = Vector2(line.Y, -line.X);
+		Vector2 screenQuad[4] = {
+			screenLP[0] + inv90RotLine,
+			screenLP[0] - inv90RotLine,
+			screenLP[1] + inv90RotLine,
+			screenLP[1] - inv90RotLine
+		};
+
+		//DrawLine(lp[0].ToVector2(), lp[1].ToVector2(), c);
+	}
+}
+
 void WindowsRSI::DrawFullVerticalLine(int InX, const LinearColor & InColor)
 {
 	if (InX < 0 || InX >= ScreenSize.X)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include "MathUtil.h"
 
 struct Vector4
 {
@@ -11,6 +12,7 @@ public:
 	FORCEINLINE Vector4(float InX, float InY, float InZ, float InW) : X(InX), Y(InY), Z(InZ), W(InW) { }
 	FORCEINLINE explicit Vector4(float InX, float InY, float InZ, bool IsPoint = true) : X(InX), Y(InY), Z(InZ) { W = IsPoint ? 1.f : 0.f; }
 
+	FORCEINLINE float Size() const;
 	FORCEINLINE float SizeSquared() const;
 	FORCEINLINE float Dot(const Vector4& InV) const;
 	FORCEINLINE bool IsZero() const
@@ -75,6 +77,11 @@ FORCEINLINE Vector4& Vector4::operator+=(const Vector4& InV)
 	Z += InV.Z;
 	W += InV.W;
 	return *this;
+}
+
+FORCEINLINE float Vector4::Size() const
+{
+	return sqrtf(X * X + Y * Y + Z * Z + W * W);
 }
 
 FORCEINLINE float Vector4::SizeSquared() const

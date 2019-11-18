@@ -19,6 +19,10 @@ public:
 	void RenderObject(class GameObject* InObject);
 
 private:
+	FORCEINLINE void DrawGizmo3D(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix);
+	FORCEINLINE void DrawXYPlane(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix);
+
+private:
 	RenderingSoftwareInterface* RSI = nullptr;
 
 	// 2D Grid Options
