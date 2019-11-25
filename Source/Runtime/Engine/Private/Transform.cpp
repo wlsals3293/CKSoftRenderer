@@ -4,9 +4,9 @@
 Matrix4x4 Transform::GetTRS()
 {
 	float cy, sy, cp, sp, cr, sr;
-	Math::GetSinCos(cy, sy, Rotaiton.Y);
-	Math::GetSinCos(cp, sp, Rotaiton.X);
-	Math::GetSinCos(cr, sr, Rotaiton.Z);
+	Math::GetSinCos(sy, cy, Rotaiton.Y);
+	Math::GetSinCos(sp, cp, Rotaiton.X);
+	Math::GetSinCos(sr, cr, Rotaiton.Z);
 
 	Matrix4x4 tMat(Vector4::UnitX, Vector4::UnitY, Vector4::UnitZ, Vector4(Position));
 	Matrix4x4 rMat(
@@ -16,7 +16,6 @@ Matrix4x4 Transform::GetTRS()
 		Vector4::UnitW);
 
 	Matrix4x4 sMat(Vector4::UnitX * Scale.X, Vector4::UnitY * Scale.Y, Vector4::UnitZ * Scale.Z, Vector4::UnitW);
-	Matrix4x4 mMat = tMat * rMat * sMat;
 
-	return mMat;
+	return tMat * rMat * sMat;
 }

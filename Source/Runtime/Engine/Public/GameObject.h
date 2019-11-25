@@ -7,12 +7,14 @@
 class GameObject
 {
 public:
-	GameObject() { MeshData = nullptr; }
+	GameObject() = default;
 
+	Transform& GetTransform() { return TransformData; }
 	void SetMesh(Mesh *InMesh) { MeshData = InMesh; }
+	Mesh* GetMesh() { return MeshData; }
 
-public:
+private:
 	Transform TransformData;
-	Mesh* MeshData;
+	Mesh* MeshData = nullptr;
 };
 

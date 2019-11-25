@@ -7,7 +7,7 @@
 class Transform
 {
 public:
-	Transform() {}
+	Transform() = default;
 
 	Matrix4x4 GetTRS();
 

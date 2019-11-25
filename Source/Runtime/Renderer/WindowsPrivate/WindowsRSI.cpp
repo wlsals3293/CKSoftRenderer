@@ -204,7 +204,7 @@ void WindowsRSI::DrawLinePrimitive(UINT InVertexSize, UINT InIndexSize, float Th
 			lp[li].Y *= (ScreenSize.Y * 0.5f);
 		}
 
-		Vector2 screenLP[2] = { lp[0].ToVector2(), lp[1].ToVector2() };
+		/*Vector2 screenLP[2] = { lp[0].ToVector2(), lp[1].ToVector2() };
 		Vector2 line = (screenLP[1] - screenLP[0]).Normalize() * halfThickness;
 		Vector2 inv90RotLine = Vector2(line.Y, -line.X);
 		Vector2 screenQuad[4] = {
@@ -212,9 +212,9 @@ void WindowsRSI::DrawLinePrimitive(UINT InVertexSize, UINT InIndexSize, float Th
 			screenLP[0] - inv90RotLine,
 			screenLP[1] + inv90RotLine,
 			screenLP[1] - inv90RotLine
-		};
+		};*/
 
-		//DrawLine(lp[0].ToVector2(), lp[1].ToVector2(), c);
+		DrawLine(lp[0].ToVector2(), lp[1].ToVector2(), c);
 	}
 }
 

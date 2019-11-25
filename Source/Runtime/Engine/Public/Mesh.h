@@ -1,41 +1,38 @@
 #pragma once
 
-#include "MathHeaders.h"
-#include "LinearColor.h"
+//#include "MathHeaders.h"
+//#include "LinearColor.h"
 #include "RSIDataTypes.h"
-
-
-/*struct VertexData
-{
-	VertexData(Vector3 InPosition = Vector3::Zero, Vector2 InUV = Vector2::Zero,
-		LinearColor InColor = LinearColor::Black) :
-		Position(InPosition), UV(InUV), Color(InColor) {}
-
-	Vector3 Position;
-	Vector2 UV;
-	LinearColor Color;
-};*/
 
 
 class Mesh
 {
 public:
-	Mesh(VertexData* InVertices, int* InIndices, int InVertexCount, int InTriangleCount);
-	~Mesh();
+	Mesh() = default;
+	Mesh(VertexData* InVertexBuffer, int* InIndexBuffer, int InVertexCount, int InIndexCount);
+	~Mesh()
+	{
+		ReleaseAllBuffers();
+	}
 
-	FORCEINLINE VertexData* GetVertices() const { return Vertices; }
-	FORCEINLINE int* GetIndices() const { return Indices; }
+	VertexData* GetVertexBuffer() const { return Vertices; }
+	int* GetIndexBuffer() const { return Indices; }
 
-	FORCEINLINE int GetVertexCount() { return VertexCount; }
-	FORCEINLINE int GetIndexCount() { return TriangleCount * 3; }
-	FORCEINLINE int GetTriangleCount() { return TriangleCount; }
+	int GetVertexCount() { return VertexCount; }
+	int GetIndexCount() { return TriangleCount * 3; }
+	int GetTriangleCount() { return TriangleCount; }
+
+	void SetMesh(VertexData* InVertexBuffer, int* InIndexBuffer, int InVertexCount, int InIndexCount);
+
+	void ReleaseAllBuffers();
 
 private:
-	VertexData* Vertices;
-	int* Indices;
+	VertexData* Vertices = nullptr;
+	int* Indices = nullptr;
 	
-	int VertexCount;
-	int TriangleCount;
+	int VertexCount = 0;
+	int IndexCount = 0;
+	int TriangleCount = 0;
 
 	Sphere BoundSphere;
 	BoundingBox BoundBox;

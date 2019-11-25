@@ -2,17 +2,23 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(VertexData * InVertices, int * InIndices, int InVertexCount, int InTriangleCount)
+Mesh::Mesh(VertexData * InVertexBuffer, int * InIndexBuffer, int InVertexCount, int InIndexCount)
 {
-	Vertices = InVertices;
-	Indices = InIndices;
+	SetMesh(InVertexBuffer, InIndexBuffer, InVertexCount, InIndexCount);
+}
+
+void Mesh::SetMesh(VertexData * InVertexBuffer, int * InIndexBuffer, int InVertexCount, int InIndexCount)
+{
+	Vertices = InVertexBuffer;
+	Indices = InIndexBuffer;
 	VertexCount = InVertexCount;
-	TriangleCount = InTriangleCount;
+	IndexCount = InIndexCount;
+	TriangleCount = IndexCount / 3;
 
 	Vector4* vertexPosArray = new Vector4[InVertexCount];
 	for (int i = 0; i < InVertexCount; i++)
 	{
-		vertexPosArray[i] = InVertices[i].Position;
+		vertexPosArray[i] = InVertexBuffer[i].Position;
 	}
 
 	BoundBox.CalcBoungingBox(vertexPosArray, InVertexCount);
@@ -21,10 +27,19 @@ Mesh::Mesh(VertexData * InVertices, int * InIndices, int InVertexCount, int InTr
 	delete[] vertexPosArray;
 }
 
-Mesh::~Mesh()
+void Mesh::ReleaseAllBuffers()
 {
-	delete[] Vertices;
-	delete[] Indices;
+	if (nullptr != Vertices)
+	{
+		delete[] Vertices;
+		Vertices = nullptr;
+	}
+
+	if (nullptr != Indices)
+	{
+		delete[] Indices;
+		Indices = nullptr;
+	}
 }
 
 

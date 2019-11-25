@@ -25,46 +25,44 @@ void SoftRendererImpl3D::LoadResource()
 	float repA = (float)ScreenSize.Y / (float)ScreenSize.X;
 	MainCamera = new Camera(60.f, 5.5f, 100.f, repA);
 
-	// 오브젝트 생성
-	Cube = new GameObject[2];
-
 	// 메쉬 생성
 	const int vertexCount = 24;
-	VertexData* v = new VertexData[vertexCount]{
-		// Front 
-		VertexData(Vector4(0.5f, -0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, 0.5f, -0.5f)),
-		VertexData(Vector4(0.5f, -0.5f, -0.5f)),
-		// Left
-		VertexData(Vector4(-0.5f, -0.5f, 0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, -0.5f, 0.5f)),
-		// Right
-		VertexData(Vector4(0.5f, -0.5f, -0.5f)),
-		VertexData(Vector4(0.5f, 0.5f, -0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, -0.5f)),
-		VertexData(Vector4(-0.5f, -0.5f, -0.5f)),
-		// Back
-		VertexData(Vector4(-0.5f, -0.5f, -0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, -0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(-0.5f, -0.5f, 0.5f)),
-		// Top
-		VertexData(Vector4(0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, 0.5f)),
-		VertexData(Vector4(-0.5f, 0.5f, -0.5f)),
-		VertexData(Vector4(0.5f, 0.5f, -0.5f)),
-		// Bottom
-		VertexData(Vector4(-0.5f, -0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, -0.5f, 0.5f)),
-		VertexData(Vector4(0.5f, -0.5f, -0.5f)),
-		VertexData(Vector4(-0.5f, -0.5f, -0.5f))
-	};
-
 	const int triangleCount = 12;
 	const int indexCount = triangleCount * 3;
+
+	VertexData* v = new VertexData[vertexCount]{
+		// Front 
+		VertexData(Vector4(0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, -0.5f, -0.5f), Color32(0, 0, 0)),
+		// Left
+		VertexData(Vector4(-0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		// Right
+		VertexData(Vector4(0.5f, -0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, -0.5f, -0.5f), Color32(0, 0, 0)),
+		// Back
+		VertexData(Vector4(-0.5f, -0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		// Top
+		VertexData(Vector4(0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, 0.5f, -0.5f), Color32(0, 0, 0)),
+		// Bottom
+		VertexData(Vector4(-0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, -0.5f, 0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(0.5f, -0.5f, -0.5f), Color32(0, 0, 0)),
+		VertexData(Vector4(-0.5f, -0.5f, -0.5f), Color32(0, 0, 0))
+	};
+	
 	int* i = new int[indexCount] {
 		0, 2, 1, 0, 3, 2,
 		4, 6, 5, 4, 7, 6,
@@ -74,68 +72,106 @@ void SoftRendererImpl3D::LoadResource()
 		20, 22, 21, 20, 23, 22
 	};
 
-	// 오브젝트에 메쉬 적용
-	Cube[0].SetMesh(new Mesh(v, i, vertexCount, triangleCount));
-	Cube[1].SetMesh(new Mesh(v, i, vertexCount, triangleCount));
+	SharedCubeMesh = std::make_unique<Mesh>();
+	SharedCubeMesh.get()->SetMesh(v, i, vertexCount, indexCount);
+	//SharedCubeMesh.get()->SetColor(c);
+
+	//delete[] v;
+	//delete[] i;
 }
 
 void SoftRendererImpl3D::LoadScene()
 {
+	// Setup Game Scene 
+	GameObject* player = new GameObject();
+	player->SetMesh(SharedCubeMesh.get());
+	player->GetTransform().Position = Vector3::Zero;
+	player->GetTransform().Rotaiton = Vector3::Zero;
+	player->GetTransform().Scale = Vector3::One * 100.f;
+	Scene.emplace_back(player);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		GameObject* worldStatic = new GameObject();
+		worldStatic->SetMesh(SharedCubeMesh.get());
+		worldStatic->GetTransform().Position = Vector3(0.f, 0.f, i * 100.f);
+		worldStatic->GetTransform().Scale = Vector3::One * 100.f;
+
+		Scene.emplace_back(worldStatic);
+	}
+
+	MainCamera->GetTransform().Position = Vector3(500.f, 500.f, -500.f);
+	/*
 	MainCamera->TransformData.Position = Vector3(0.f, 500.f, -500.f);
-	Cube[0].TransformData.Scale = Vector3(100.f, 100.f, 100.f);
-	Cube[1].TransformData.Scale = Vector3(100.f, 100.f, 100.f);
-	Cube[1].TransformData.Position = Vector3(200.f, 0.f, 0.f);
+	Cube[1].TransformData.Position = Vector3(200.f, 0.f, 0.f);*/
 }
 
 void SoftRendererImpl3D::RenderFrameImpl()
 {
 	assert(RSI != nullptr && RSI->IsInitialized() && !ScreenSize.HasZero());
 
-	Matrix4x4 vMat = MainCamera->GetLookAtMatrix(Cube[0].TransformData.Position);
+	auto player = Scene[0].get();
+	Matrix4x4 vMat = MainCamera->GetLookAtMatrix(player->GetTransform().Position);
 	Matrix4x4 pMat = MainCamera->GetProjectionMatrix();
-	Matrix4x4 m[3] = { Matrix4x4(),	vMat, pMat };
 
-	for (int i = 0; i < 2; i++)
+	for (auto& g : Scene)
+	{
+		Matrix4x4 mMat = g->GetTransform().GetTRS();
+
+		Matrix4x4 m[3] = { mMat, vMat, pMat };
+
+		Mesh* meshToRender = player->GetMesh();
+		int vertexCount = meshToRender->GetVertexCount();
+		int indexCount = meshToRender->GetIndexCount();
+		VertexData* meshVertexBuffer = meshToRender->GetVertexBuffer();
+		int* i = meshToRender->GetIndexBuffer();
+
+		RSI->SetUniformMatrix(m);
+		RSI->SetVertexBuffer(meshVertexBuffer);
+		RSI->SetIndexBuffer(i);
+		RSI->DrawPrimitive(vertexCount, indexCount);
+	}
+
+	/*for (int i = 0; i < 2; i++)
 	{
 		m[0] = Cube[i].TransformData.GetTRS();
 		RSI->SetUniformMatrix(m);
-		RenderObject(&Cube[i]);
-	}
+		Mesh* meshToRender = Cube[i]>MeshData;
+		int vertexCount = meshToRender->GetVertexCount();
+		int indexCount = meshToRender->GetIndexCount();
+
+		RSI->SetVertexBuffer(meshToRender->GetVertices());
+		RSI->SetIndexBuffer(meshToRender->GetIndices());
+		RSI->DrawPrimitive(vertexCount, indexCount);
+	}*/
 
 	DrawGizmo3D(vMat, pMat);
+	DrawXYPlane(vMat, pMat);
 }
 
 void SoftRendererImpl3D::UpdateImpl(float DeltaSeconds)
 {
-	static float moveSpeed = 100.f;
+	static float moveSpeed = 1000.f;
 	static float rotateSpeed = 180.f;
 
-	Cube[0].TransformData.Position += Vector3::UnitZ * InputManager.GetYAxis() * moveSpeed * DeltaSeconds;
-	Cube[0].TransformData.Rotaiton.Y += InputManager.GetXAxis() * rotateSpeed * DeltaSeconds;
-	Cube[1].TransformData.Rotaiton.Y -= InputManager.GetXAxis() * rotateSpeed * 2 * DeltaSeconds;
-}
-
-void SoftRendererImpl3D::RenderObject(GameObject * InObject)
-{
-	Mesh* meshToRender = InObject->MeshData;
-	int vertexCount = meshToRender->GetVertexCount();
-	int indexCount = meshToRender->GetIndexCount();
-	
-	RSI->SetVertexBuffer(meshToRender->GetVertices());
-	RSI->SetIndexBuffer(meshToRender->GetIndices());
-	RSI->DrawPrimitive(vertexCount, indexCount);
+	auto player = Scene[0].get();
+	Vector3 deltaPos = Vector3::UnitZ * InputManager.GetYAxis() * moveSpeed * DeltaSeconds;
+	float deltaDegree = InputManager.GetXAxis() * rotateSpeed * DeltaSeconds;
+	float deltaDegree2 = InputManager.GetYAxis() * rotateSpeed * DeltaSeconds;
+	player->GetTransform().Position += deltaPos;
+	player->GetTransform().Rotaiton.Y += deltaDegree;
 }
 
 void SoftRendererImpl3D::DrawGizmo3D(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix)
 {
 	const int gizmosVertexCount = 6;
 	VertexData v[gizmosVertexCount] = {
-		VertexData(Vector3::Zero, LinearColor::Red),
-		VertexData(Vector3::UnitX * 500.f, LinearColor::Red),
-		VertexData(Vector3::Zero, LinearColor::Green),
-		VertexData(Vector3::UnitY * 500.f, LinearColor::Green),
-		VertexData(Vector3::Zero, LinearColor::Blue),
-		VertexData(Vector3::UnitZ * 500.f, LinearColor::Blue),
+		VertexData(Vector3::Zero, LinearColor::Red.ToColor32()),
+		VertexData(Vector3::UnitX * 500.f, LinearColor::Red.ToColor32()),
+		VertexData(Vector3::Zero, LinearColor::Green.ToColor32()),
+		VertexData(Vector3::UnitY * 500.f, LinearColor::Green.ToColor32()),
+		VertexData(Vector3::Zero, LinearColor::Blue.ToColor32()),
+		VertexData(Vector3::UnitZ * 500.f, LinearColor::Blue.ToColor32()),
 	};
 
 	const int gizmosLineCount = 3;

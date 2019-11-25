@@ -34,7 +34,7 @@ Matrix4x4 Camera::GetProjectionMatrix()
 	return ProjectionMat;
 }
 
-Matrix4x4 Camera::GetLookAtMatrix(Vector3 LookAtPos)
+Matrix4x4 Camera::GetLookAtMatrix(Vector3& LookAtPos)
 {
 	Vector3 viewZ = (TransformData.Position - LookAtPos).Normalize();
 	Vector3 viewX = Vector3::UnitY.Cross(viewZ).Normalize();
@@ -53,9 +53,9 @@ Matrix4x4 Camera::GetLookAtMatrix(Vector3 LookAtPos)
 void Camera::CalcProjectionMat()
 {
 	float d = 1.f / tanf(Math::Deg2Rad(FOV) * 0.5f);
-	float repNF = 1.f / (Near - Far);
-	float k = Far * repNF;
-	float l = Far * Near * repNF;
+	float invNF = 1.f / (Near - Far);
+	float k = Far * invNF;
+	float l = Far * Near * invNF;
 	ProjectionMat = Matrix4x4(
 		Vector4::UnitX * RepAspectRatio * d,
 		Vector4::UnitY * d,

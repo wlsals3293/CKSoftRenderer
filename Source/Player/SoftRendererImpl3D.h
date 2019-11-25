@@ -15,9 +15,6 @@ public:
 	void RenderFrameImpl();
 	void UpdateImpl(float DeltaSeconds);
 
-
-	void RenderObject(class GameObject* InObject);
-
 private:
 	FORCEINLINE void DrawGizmo3D(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix);
 	FORCEINLINE void DrawXYPlane(Matrix4x4 InVMatrix, Matrix4x4 InPMatrix);
@@ -33,12 +30,11 @@ private:
 	InputManager InputManager;
 
 	// Resource
-	//VertexData* v = nullptr;
-	//int* i = nullptr;
+	std::unique_ptr<Mesh> SharedCubeMesh;
 
 	// Camera
-	class Camera* MainCamera;
+	Camera* MainCamera;
 
 	// GameObject
-	GameObject* Cube;
+	std::vector<std::unique_ptr<GameObject>> Scene;
 };

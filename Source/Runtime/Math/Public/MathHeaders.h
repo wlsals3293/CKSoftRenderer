@@ -11,5 +11,8 @@
 
 #include "ScreenPoint.h"
 
+#include "Color32.h"
+#include "LinearColor.h"
+
 #include "Sphere.h"
 #include "BoundingBox.h"
